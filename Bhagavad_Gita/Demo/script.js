@@ -181,14 +181,16 @@
 //     }
 // ];
 
+// import { Milan } from './demo';
+
 
 const url = 'https://bhagavad-gita3.p.rapidapi.com/v2/chapters/?skip=0&limit=18';
 const options = {
-	method: 'GET',
-	headers: {
-		'x-rapidapi-key': 'bcba844d26msh2d333e852898b44p124f13jsn0e520c9be445',
-		'x-rapidapi-host': 'bhagavad-gita3.p.rapidapi.com'
-	}
+    method: 'GET',
+    headers: {
+        'x-rapidapi-key': 'bcba844d26msh2d333e852898b44p124f13jsn0e520c9be445',
+        'x-rapidapi-host': 'bhagavad-gita3.p.rapidapi.com'
+    }
 };
 
 try {
@@ -199,7 +201,7 @@ try {
         displaychpters(Gita);
     });
 } catch (error) {
-	console.error(error);
+    console.error(error);
 }
 
 function displaychpters(Gita) {
@@ -207,14 +209,16 @@ function displaychpters(Gita) {
         let col = document.createElement('div');
         col.className = "col";
 
+        let id = chapter.id;
+
         col.innerHTML = `
-            <a href="./Chapter/${chapter.id}.html" class="chapter-link">
+            <a href="./demo.html" id="c${id}" class="chapter-link">
                 <div class="card abc" style="width: 100%; height:100%;">
                     <div class="card-body">
                         <h6 class="card-title card-ch">Chapter ${chapter.id}</h6>
                         <h6 class="h2 card-title mb-2">${chapter.name_translated}</h6>
                         <p class="card-text mb-3">${chapter.chapter_summary}</p>
-                        <a href="#" class="card-link">
+                        <span class="card-link">
                             <svg class="me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="list">
                                 <g>
                                     <g>
@@ -228,21 +232,33 @@ function displaychpters(Gita) {
                                 </g>
                             </svg>
                             ${chapter.verses_count} Verses
-                        </a>
+                        </span>
                     </div>
                 </div>
             </a>`;
 
         // append col to row
         document.getElementById("cards").appendChild(col);
+        console.log(chapter.id);
 
-        // ✅ attach Milan call to the anchor
-        let link = col.querySelector(".chapter-link");
-        link.addEventListener("click", (e) => {
-            e.preventDefault(); // stop default navigation
-            Milan(chapter.id);
-        });
+        
     });
+
+    Gita.forEach((chapter) => {
+        let link = document.querySelector(`${id}`);
+        console.log(link);
+        
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            
+            localStorage.setItem("chapterId", chapter.id);
+            console.log(localStorage.getItem("chapterId"));
+             // save clicked chapter
+            window.location.href = "./demo.html"; // go to demo.html
+        });
+
+    })
+
 }
 
 

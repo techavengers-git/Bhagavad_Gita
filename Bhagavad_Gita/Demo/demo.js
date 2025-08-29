@@ -1,12 +1,13 @@
 
-var ChapterNumber;
+// demo.js
+var ChapterNumber = 1;
 
-export function Milan(ch) {
-    ChapterNumber = ch;
-}
+document.addEventListener("DOMContentLoaded", () => {
+    ChapterNumber = localStorage.getItem("chapterId");
+    console.log(ChapterNumber);
+})
 
-
-const urlCh = `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/${ChapterNumber}/`;
+const urlCh = 'https://bhagavad-gita3.p.rapidapi.com/v2/chapters/1/';
 const options1 = {
     method: 'GET',
     headers: {
@@ -40,7 +41,7 @@ function displaychpters(Gita) {
 }
 
 
-var url = `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/${ChapterNumber}/verses/`;
+var url = 'https://bhagavad-gita3.p.rapidapi.com/v2/chapters/1/verses/';
 const options = {
     method: 'GET',
     headers: {
@@ -81,30 +82,31 @@ function displayverses(Gita) {
         let colPartId = `col-${verse.verse_number}`;
 
         col.innerHTML = `
-                    <a class="d-flex flex-wrap w-100" onclick="abc(${verse.verse_number})" data-bs-toggle="collapse" href="#${collapse}" role="button" aria-expanded="false" aria-controls="${collapse}">
-                        <div class="col-12 col-lg-2">
-                            <span class="card-title card-ch">Verse ${verse.verse_number}</span>
-                        </div>
-                        <div class="col-12 col-lg-10">
-                            ${description}
-                        </div>
-                    </a>
-                    <div class="collapse" id="${collapse}" data-bs-parent="#accordionGita">
-                        <div class="card card-body" id="${colPartId}" style="width: 100%;">
-                            
-                        </div>
-                    </div>
-                `;
+            <a class="d-flex flex-wrap w-100" onclick="abc(${verse.verse_number})" data-bs-toggle="collapse" href="#${collapse}" role="button" aria-expanded="false" aria-controls="${collapse}">
+                <div class="col-12 col-lg-2">
+                    <span class="card-title card-ch">Verse ${verse.verse_number}</span>
+                </div>
+                <div class="col-12 col-lg-10">
+                    ${description}
+                </div>
+            </a>
+            <div class="collapse" id="${collapse}" data-bs-parent="#accordionGita">
+                <div class="card card-body" id="${colPartId}" style="width: 100%;">
+                    
+                </div>
+            </div>
+        `;
 
         parent.appendChild(col);
     });
 
     document.getElementById("vcards").appendChild(parent);
+
 }
 
 
-function abc(vid) {
-    var urlv = `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/${ChapterNumber}/verses/${vid}/`;
+window.abc = function(vid) {
+    var urlv = `https://bhagavad-gita3.p.rapidapi.com/v2/chapters/1/verses/${vid}/`;
     const options2 = {
         method: 'GET',
         headers: {
@@ -126,18 +128,16 @@ function abc(vid) {
 }
 
 
-
-
 function displaycollapse(Verse) {
     let colPartId = `col-${Verse.verse_number}`;
     let coll = document.createElement('div');
     coll.className = "coll text-center";
     coll.innerHTML = `
-                <div>
-                    <h2 class="card-title">BG ${Verse.chapter_number}.${Verse.verse_number}</h2>
-                    <h4 class="card-subtitle mb-2 slok card-ch lh-base">${Verse.text}</h4>
-                </div>
-            `;
+        <div>
+            <h2 class="card-title">BG ${Verse.chapter_number}.${Verse.verse_number}</h2>
+            <h4 class="card-subtitle mb-2 slok card-ch lh-base">${Verse.text}</h4>
+        </div>
+    `;
 
     document.getElementById(colPartId).innerHTML = "";
     document.getElementById(colPartId).appendChild(coll);
